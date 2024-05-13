@@ -16,7 +16,7 @@ type SharePoint struct {
 	CertPassphrase string `json:"cert_passphrase"`
 }
 
-func ConnectSharePoint(configPath string) (*SharePoint, error) {
+func NewSharePointFromFile(configPath string) (*SharePoint, error) {
 	out := SharePoint{}
 
 	content, err := os.ReadFile(configPath)
@@ -30,6 +30,16 @@ func ConnectSharePoint(configPath string) (*SharePoint, error) {
 	slog.Info("config file loaded successfully")
 
 	return &out, nil
+}
+
+func NewSharePoint(tenantId, clientId, certPath, certPass string) *SharePoint {
+	out := SharePoint{
+		TenantId:       tenantId,
+		ClientId:       clientId,
+		CertPath:       certPath,
+		CertPassphrase: certPass,
+	}
+	return &out
 }
 
 func (site *SharePoint) ConnectToSite(siteUrl string) (*Site, error) {
